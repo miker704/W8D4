@@ -1,22 +1,34 @@
+const readline = require('readline');
 
-const { stdin, stdout } = require('process');
-const readInput = require('readline');
-
-const reader = readInput.createInterface({
-
-    // it's okay if this part is magic; it just says that we want to
-    // 1. output the prompt to the standard output (console)
-    // 2. read input from the standard input (again, console)
-    input: process.stdin,
-    output: process.stdout
+const reader = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
 });
 
 
-class AddNumbers {
-  
 
+function AddNumbers (sum, numsLeft, cb) {
+  if (numsLeft > 0) {
+    reader.question ('Input number to be added: ', function(number) {
+    let newSum = sum + parseInt(number);
+    let newNumsLeft = numsLeft - 1;
+
+    cb(newSum);
+
+    AddNumbers(newSum, newNumsLeft, cb)})
+    
+  } else {
+      return cb(sum)
+
+  };
+};
+
+function printSum(sum) {
+    console.log(`Total Sum: ${sum}`)
 }
 
+//array.each do |num|
+// AddNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
 
-
-AddNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
+//old fashion way. Same with the cb above. 
+AddNumbers(0, 3, printSum) 
